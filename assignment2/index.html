@@ -15,7 +15,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(145deg, #0B2F4E, #1B4A6B);
+            background: linear-gradient(145deg, #0e0e0d, #0e0e0e);
             padding: 25px;
         }
 
@@ -31,7 +31,7 @@
 
         h1 {
             text-align: center;
-            color: #E1F0FA;
+            color: #1788d2;
             margin-bottom: 30px;
             font-weight: 400;
             letter-spacing: 1px;
@@ -44,6 +44,7 @@
             margin-bottom: 20px;
             width: 100%;
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            color: black;
         }
 
         .search-wrapper {
@@ -118,6 +119,16 @@
                 flex-direction: column;
             }
         }
+
+        body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: sans-serif;
+  transition: 0.5s;
+}
     </style>
 </head>
 
@@ -136,7 +147,8 @@
                 <br>
                 <h3>📋 Recent Searches</h3>
                 <div class="history-panel" id="history"></div>
-            </div>
+                <button class="extra-btn" onclick="clearHistory()">Clear All</button>
+                </div>
 
             <div class="glass-card">
                 <h3>🌡️ Current Weather</h3>
@@ -145,9 +157,12 @@
         </div>
 
     </div>
+    <body id="body">
+  <h1 id="greet"></h1>
+</body>
 
     <script>
-        const API_KEY = "0f7fd5ed6ce14727aeb93d3ca3db20fa";
+        const API_KEY = "5de65de81c868557011361edcfa219ba";
         
         const weatherBox = document.getElementById("weather");
         const historyBox = document.getElementById("history");
@@ -210,6 +225,12 @@
             historyBox.innerHTML = html;
         }
 
+        function clearHistory() {
+    localStorage.removeItem("weatherSearches");
+    searchHistory = [];
+    showHistory();
+}
+
         async function search(city) {
             weatherBox.innerHTML = '<p style="color:#666;">Loading...</p>';
             try {
@@ -233,6 +254,28 @@
 
         // Load history on page load
         showHistory();
+
+        function setDayNightMode() {
+  const hour = new Date().getHours();
+  const body = document.getElementById("body");
+  const greet = document.getElementById("greet");
+
+  if (hour >= 6 && hour < 18) {
+    body.style.background = "linear-gradient(to right, #fceabb, #f8b500)";
+    body.style.color = "black";
+    greet.innerText = "Good Day ☀️";
+  } else {
+    body.style.background = "linear-gradient(to right, #141e30, #243b55)";
+    body.style.color = "white";
+    greet.innerText = "Good Night 🌙";
+  }
+}
+
+setDayNightMode();
+
+setInterval(setDayNightMode, 600);
+
+
     </script>
 </body>
 
